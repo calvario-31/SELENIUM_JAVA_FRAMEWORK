@@ -5,6 +5,7 @@ import models.source.BrowserModel;
 import models.source.CapabilitiesModel;
 import models.source.OsModel;
 import org.openqa.selenium.WebDriver;
+import utilities.Log;
 
 import java.io.File;
 import java.util.HashMap;
@@ -30,8 +31,11 @@ public class CapabilitiesDataReader {
 
     public static CapabilitiesModel getRemoteCapabilities(){
         buildHashCapabilities();
+        Log.debug("CAPABILITIES HAS BEEN BUILT");
         String browser = System.getProperty("browser");
         String os = System.getProperty("os");
+        Log.debug("browser from java: " + browser);
+        Log.debug("os from java: " + os);
         return new CapabilitiesModel(browserCapabilities.get(browser), osCapabilities.get(os));
     }
 

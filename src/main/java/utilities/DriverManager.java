@@ -71,6 +71,7 @@ public class DriverManager {
             Log.info("Assigning remote capabilities");
             capabilitiesModel = CapabilitiesDataReader.getRemoteCapabilities();
             assignedCapabilities = true;
+            Log.debug("capabilities assigned");
         }
         try {
             driver = new RemoteWebDriver(new URL(capabilitiesModel.getBrowserstackUrl()),
