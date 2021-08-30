@@ -37,7 +37,6 @@ public class Listeners implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         Log.endTest("FAILED", result.getName());
-
         WebDriver driver = getDriverFromResult(result);
         new DriverManager().getScreenshot(driver);
 
@@ -68,7 +67,7 @@ public class Listeners implements ITestListener {
     @Override
     public void onStart(ITestContext context) {
         Log.info("Beginning: " + context.getSuite().getName());
-
+        runOnServer = System.getenv("JOB_NAME") != null;
         if(runOnServer){
             Log.info("Assigning remote capabilities");
             DriverManager.capabilitiesModel = CapabilitiesDataReader.getRemoteCapabilities();
