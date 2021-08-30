@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Sauce Labs regression suite" verbose="2">
+    <groups>
+        <run>
+            <include name="failed"/>
+        </run>
+    </groups>
+
+    <listeners>
+        <listener class-name="utilities.Listeners"/>
+    </listeners>
+
+    <test name="failed test">
+        <packages>
+            <package name="dummyfails"/>
+        </packages>
+    </test>
+</suite>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Sauce Labs smoke suite" verbose="2">
+    <groups>
+        <run>
+            <include name="smoke"/>
+        </run>
+    </groups>
+
+    <listeners>
+        <listener class-name="utilities.Listeners"/>
+    </listeners>
+
+    <test name="credentials">
+        <packages>
+            <package name="credentials"/>
+        </packages>
+    </test>
+
+    <test name="shopping">
+        <packages>
+            <package name="shopping"/>
+        </packages>
+    </test>
+
+    <test name="menu burger">
+        <packages>
+            <package name="menuburger"/>
+        </packages>
+    </test>
+</suite>
