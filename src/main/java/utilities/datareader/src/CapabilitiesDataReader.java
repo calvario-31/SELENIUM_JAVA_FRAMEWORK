@@ -32,24 +32,20 @@ public class CapabilitiesDataReader {
             e.printStackTrace();
             Log.debug("failed os list");
         }
-        Log.debug("browser list has been retrieved");
+
         browserCapabilities.put("CHROME", browserList.get(0));
         browserCapabilities.put("FIREFOX", browserList.get(1));
         browserCapabilities.put("EDGE", browserList.get(2));
         browserCapabilities.put("SAFARI", browserList.get(3));
 
-        Log.debug("os list has been retrieved");
         osCapabilities.put("WINDOWS", osList.get(0));
         osCapabilities.put("MAC", osList.get(1));
     }
 
     public static CapabilitiesModel getRemoteCapabilities(){
         buildHashCapabilities();
-        Log.debug("CAPABILITIES HAS BEEN BUILT");
         String browser = System.getProperty("browser");
         String os = System.getProperty("os");
-        Log.debug("browser from java: " + browser);
-        Log.debug("os from java: " + os);
         return new CapabilitiesModel(browserCapabilities.get(browser), osCapabilities.get(os));
     }
 
