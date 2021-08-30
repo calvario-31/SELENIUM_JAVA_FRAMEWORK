@@ -5,9 +5,9 @@ import com.poiji.annotation.ExcelSheet;
 
 @ExcelSheet("osCap")
 public class OsModel {
-    @ExcelCellName("OS")
+    @ExcelCellName("os")
     private final String os;
-    @ExcelCellName("Version")
+    @ExcelCellName("version")
     private final String version;
 
     public OsModel(String os, String version) {

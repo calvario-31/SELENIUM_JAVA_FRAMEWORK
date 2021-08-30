@@ -20,11 +20,13 @@ public class CapabilitiesDataReader {
         List<BrowserModel> browserList = Poiji.fromExcel(new File(EXCEL_PATH_CAP), BrowserModel.class);
         List<OsModel> osList = Poiji.fromExcel(new File(EXCEL_PATH_CAP), OsModel.class);
 
+        Log.debug("browser list has been retrieved");
         browserCapabilities.put("CHROME", browserList.get(0));
         browserCapabilities.put("FIREFOX", browserList.get(1));
         browserCapabilities.put("EDGE", browserList.get(2));
         browserCapabilities.put("SAFARI", browserList.get(3));
 
+        Log.debug("os list has been retrieved");
         osCapabilities.put("WINDOWS", osList.get(0));
         osCapabilities.put("MAC", osList.get(1));
     }
