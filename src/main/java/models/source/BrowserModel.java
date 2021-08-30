@@ -6,9 +6,12 @@ import com.poiji.annotation.ExcelSheet;
 @ExcelSheet("browserCap")
 public class BrowserModel {
     @ExcelCellName("browser")
-    private final String browser;
+    private String browser;
     @ExcelCellName("version")
-    private final String version;
+    private String version;
+
+    public BrowserModel() {
+    }
 
     public BrowserModel(String browser, String version) {
         this.browser = browser;

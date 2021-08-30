@@ -11,9 +11,6 @@ public class CapabilitiesModel {
     private String browserstackUrl;
     private DesiredCapabilities desiredCapabilities;
 
-    public CapabilitiesModel() {
-    }
-
     public CapabilitiesModel(BrowserModel browserModel, OsModel osModel) {
         this.browserModel = browserModel;
         this.osModel = osModel;
