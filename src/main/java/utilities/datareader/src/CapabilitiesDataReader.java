@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import utilities.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,9 +18,20 @@ public class CapabilitiesDataReader {
     private static final HashMap<String, BrowserModel> browserCapabilities= new HashMap<>();
 
     public static void buildHashCapabilities(){
-        List<BrowserModel> browserList = Poiji.fromExcel(new File(EXCEL_PATH_CAP), BrowserModel.class);
-        List<OsModel> osList = Poiji.fromExcel(new File(EXCEL_PATH_CAP), OsModel.class);
-
+        List<BrowserModel> browserList = new ArrayList<>();
+        List<OsModel> osList = new ArrayList<>();
+        try{
+            browserList = Poiji.fromExcel(new File(EXCEL_PATH_CAP), BrowserModel.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.debug("failed browser list");
+        }
+        try{
+            osList = Poiji.fromExcel(new File(EXCEL_PATH_CAP), OsModel.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.debug("failed os list");
+        }
         Log.debug("browser list has been retrieved");
         browserCapabilities.put("CHROME", browserList.get(0));
         browserCapabilities.put("FIREFOX", browserList.get(1));
