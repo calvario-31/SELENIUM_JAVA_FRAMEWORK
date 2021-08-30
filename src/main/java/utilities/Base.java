@@ -8,7 +8,7 @@ import org.testng.annotations.Listeners;
 @Listeners({utilities.Listeners.class})
 public abstract class Base {
     protected WebDriver driver;
-    private final boolean runOnServer = System.getenv("JOB_NAME") != null;
+    public final static boolean runOnServer = System.getenv("JOB_NAME") != null;
 
     protected void setup() {
         Log.info("Setting up the driver");

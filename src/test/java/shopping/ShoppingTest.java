@@ -4,9 +4,9 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.TmsLink;
-import models.CredentialsModel;
-import models.ShoppingItemModel;
-import models.UserDataModel;
+import models.test.CredentialsModel;
+import models.test.ShoppingItemModel;
+import models.test.UserDataModel;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageobjects.account.LoginPage;
@@ -17,7 +17,7 @@ import pageobjects.checkout.SuccessShoppingPage;
 import pageobjects.shopping.DetailItemPage;
 import pageobjects.shopping.ShoppingPage;
 import utilities.Base;
-import utilities.DataReader;
+import utilities.datareader.test.TestDataReader;
 
 import java.util.List;
 
@@ -86,10 +86,10 @@ public class ShoppingTest extends Base {
 
     @DataProvider(name = "test data")
     public Object[][] dataProvider() {
-        DataReader dataReader = new DataReader();
+        TestDataReader testDataReader = new TestDataReader();
 
         return new Object[][]{
-                {dataReader.getValidCredentials(), dataReader.getItemList(), dataReader.getUserData()}
+                {testDataReader.getValidCredentials(), testDataReader.getItemList(), testDataReader.getUserData()}
         };
     }
 }

@@ -3,7 +3,7 @@ package utilities;
 import com.google.common.collect.ImmutableMap;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Attachment;
-import org.openqa.selenium.Capabilities;
+import models.source.CapabilitiesModel;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -12,15 +12,19 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import pageobjects.Page;
+import utilities.datareader.src.CapabilitiesDataReader;
+
+import java.net.URL;
 
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
 public class DriverManager {
     private WebDriver driver;
-    private static Capabilities capabilities;
+    public static CapabilitiesModel capabilitiesModel;
+    private static boolean assignedCapabilities = false;
+    private static String browser = System.getProperty("browser");
 
     public WebDriver buildLocalDriver() {
-        String browser = System.getProperty("browser");
         if (browser == null) {
             Log.info("Setting default local browser to CHROME");
             browser = "CHROME";
@@ -43,6 +47,7 @@ public class DriverManager {
                 driver = new EdgeDriver();
                 break;
             default:
+                Log.error("Bad browser name");
                 break;
         }
 
@@ -51,24 +56,41 @@ public class DriverManager {
         Log.info("Deleting all the cookies");
         driver.manage().deleteAllCookies();
         Log.info("Getting the capabilities");
-        capabilities = ((RemoteWebDriver) driver).getCapabilities();
+
+        if (!assignedCapabilities) {
+            Log.info("Assigning local capabilities");
+            capabilitiesModel = CapabilitiesDataReader.getLocalCapabilities(driver);
+            assignedCapabilities = true;
+        }
 
         return driver;
     }
 
     public WebDriver buildRemoteDriver() {
-        //capabilities = ((RemoteWebDriver) driver).getCapabilities();
-
-        return null;
+        if (!assignedCapabilities) {
+            Log.info("Assigning remote capabilities");
+            capabilitiesModel = CapabilitiesDataReader.getRemoteCapabilities();
+            assignedCapabilities = true;
+        }
+        try {
+            driver = new RemoteWebDriver(new URL(capabilitiesModel.getBrowserstackUrl()),
+                    capabilitiesModel.getDesiredCapabilities());
+            return driver;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.error("Failed building remote driver");
+            return null;
+        }
     }
 
     public void writeEnvVariables() {
         Log.info("Writing environmental variables to the report");
         allureEnvironmentWriter(
                 ImmutableMap.<String, String>builder()
-                        .put("Browser", capabilities.getBrowserName())
-                        .put("Browser Version", capabilities.getVersion())
-                        .put("Platform", capabilities.getPlatform().toString())
+                        .put("Browser", capabilitiesModel.getBrowserModel().getBrowser())
+                        .put("Browser Version", capabilitiesModel.getBrowserModel().getVersion())
+                        .put("OS", capabilitiesModel.getOsModel().getOs())
+                        .put("OS Version", capabilitiesModel.getOsModel().getVersion())
                         .put("URL", Page.getMainUrl())
                         .build());
     }

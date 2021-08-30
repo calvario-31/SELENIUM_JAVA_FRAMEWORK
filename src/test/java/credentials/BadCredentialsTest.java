@@ -4,12 +4,12 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.TmsLink;
-import models.CredentialsModel;
+import models.test.CredentialsModel;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageobjects.account.LoginPage;
 import utilities.Base;
-import utilities.DataReader;
+import utilities.datareader.test.TestDataReader;
 
 public class BadCredentialsTest extends Base {
     private LoginPage loginPage;
@@ -38,11 +38,11 @@ public class BadCredentialsTest extends Base {
 
     @DataProvider(name = "test data")
     public Object[][] dataProvider() {
-        DataReader dataReader = new DataReader();
-        dataReader.getLockedCredentials();
+        TestDataReader testDataReader = new TestDataReader();
+        testDataReader.getLockedCredentials();
 
         return new Object[][]{
-                {dataReader.getLockedCredentials()}
+                {testDataReader.getLockedCredentials()}
         };
     }
 }

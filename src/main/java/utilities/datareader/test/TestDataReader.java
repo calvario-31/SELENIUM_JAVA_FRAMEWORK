@@ -1,14 +1,14 @@
-package utilities;
+package utilities.datareader.test;
 
 import com.poiji.bind.Poiji;
-import models.CredentialsModel;
-import models.ShoppingItemModel;
-import models.UserDataModel;
+import models.test.CredentialsModel;
+import models.test.ShoppingItemModel;
+import models.test.UserDataModel;
 
 import java.io.File;
 import java.util.List;
 
-public class DataReader {
+public class TestDataReader {
     private final String EXCEL_PATH = "src/test/resources/data/testData.xlsx";
     private final String SAUCE_LABS_URL = "https://saucelabs.com/";
 

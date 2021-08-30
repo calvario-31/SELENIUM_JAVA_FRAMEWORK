@@ -4,13 +4,13 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.TmsLink;
-import models.CredentialsModel;
+import models.test.CredentialsModel;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageobjects.account.LoginPage;
 import pageobjects.shopping.ShoppingPage;
 import utilities.Base;
-import utilities.DataReader;
+import utilities.datareader.test.TestDataReader;
 
 public class LogoutTest extends Base {
     private LoginPage loginPage;
@@ -44,10 +44,10 @@ public class LogoutTest extends Base {
 
     @DataProvider(name = "test data")
     public Object[][] dataProvider() {
-        DataReader dataReader = new DataReader();
+        TestDataReader testDataReader = new TestDataReader();
 
         return new Object[][]{
-                {dataReader.getValidCredentials()}
+                {testDataReader.getValidCredentials()}
         };
     }
 }

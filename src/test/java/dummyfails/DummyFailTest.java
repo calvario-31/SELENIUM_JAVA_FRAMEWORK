@@ -4,13 +4,13 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import models.CredentialsModel;
+import models.test.CredentialsModel;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageobjects.account.LoginPage;
 import pageobjects.shopping.ShoppingPage;
 import utilities.Base;
-import utilities.DataReader;
+import utilities.datareader.test.TestDataReader;
 
 public class DummyFailTest extends Base {
     private LoginPage loginPage;
@@ -53,19 +53,19 @@ public class DummyFailTest extends Base {
 
     @DataProvider(name = "valid user data")
     public Object[][] dataProviderValid() {
-        DataReader dataReader = new DataReader();
+        TestDataReader testDataReader = new TestDataReader();
 
         return new Object[][]{
-                {dataReader.getValidCredentials()}
+                {testDataReader.getValidCredentials()}
         };
     }
 
     @DataProvider(name = "locked out user data")
     public Object[][] dataProviderLockedOut() {
-        DataReader dataReader = new DataReader();
+        TestDataReader testDataReader = new TestDataReader();
 
         return new Object[][]{
-                {dataReader.getLockedCredentials()}
+                {testDataReader.getLockedCredentials()}
         };
     }
 }
