@@ -1,6 +1,5 @@
 package utilities;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -16,15 +15,12 @@ public class Listeners implements ITestListener {
     public void onTestStart(ITestResult result) {
         Log.startTest(result.getName());
         if(runOnServer){
-            Log.info("Getting the test name for browserstack");
-            Object currentClass = result.getInstance();
-            WebDriver driver = ((Base) currentClass).driver;
-            JavascriptExecutor jse = (JavascriptExecutor) driver;
-            jse.executeScript("browserstack_executor: {\"action\": \"setSessionName\", \"arguments\": {\"name\":\"" + result.getName() + " \" }}");
-
-            if(assignedCapabilities){
+            new BrowserStackScripts().writeInit(getDriverFromResult(result), result.getName());
+        } else {
+            if(!assignedCapabilities){
                 Log.info("Assigning local capabilities");
-                DriverManager.capabilitiesModel = CapabilitiesDataReader.getLocalCapabilities(driver);
+                DriverManager.capabilitiesModel =
+                        CapabilitiesDataReader.getLocalCapabilities(getDriverFromResult(result));
                 assignedCapabilities = true;
             }
         }
@@ -34,7 +30,7 @@ public class Listeners implements ITestListener {
     public void onTestSuccess(ITestResult result) {
         Log.endTest("PASSED", result.getName());
         if(runOnServer){
-            new BrowserStackScripts().writeSuccess(result);
+            new BrowserStackScripts().writeSuccess(getDriverFromResult(result));
         }
     }
 
@@ -42,12 +38,11 @@ public class Listeners implements ITestListener {
     public void onTestFailure(ITestResult result) {
         Log.endTest("FAILED", result.getName());
 
-        Object currentClass = result.getInstance();
-        WebDriver driver = ((Base) currentClass).driver;
+        WebDriver driver = getDriverFromResult(result);
         new DriverManager().getScreenshot(driver);
 
         if(runOnServer){
-            new BrowserStackScripts().writeFailure(result);
+            new BrowserStackScripts().writeFailure(driver);
         }
     }
 
@@ -61,7 +56,7 @@ public class Listeners implements ITestListener {
         Log.endTest("SKIPPED", result.getName());
 
         if(runOnServer){
-            new BrowserStackScripts().writeSkipped(result);
+            new BrowserStackScripts().writeSkipped(getDriverFromResult(result));
         }
     }
 
@@ -74,17 +69,28 @@ public class Listeners implements ITestListener {
     public void onStart(ITestContext context) {
         Log.info("Beginning: " + context.getSuite().getName());
 
-        DriverManager.browser = System.getProperty("browser");
-
         if(runOnServer){
             Log.info("Assigning remote capabilities");
             DriverManager.capabilitiesModel = CapabilitiesDataReader.getRemoteCapabilities();
+        } else {
+            String browser = System.getProperty("browser");
+            if (browser == null) {
+                Log.info("Setting default local browser to CHROME");
+                browser = "CHROME";
+            }
+            DriverManager.browser = browser;
         }
     }
+
 
     @Override
     public void onFinish(ITestContext context) {
         Log.info("Ending: " + context.getSuite().getName());
         new DriverManager().writeEnvVariables();
+    }
+
+    private WebDriver getDriverFromResult(ITestResult result){
+        Object currentClass = result.getInstance();
+        return ((Base) currentClass).driver;
     }
 }

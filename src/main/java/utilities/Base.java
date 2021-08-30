@@ -20,6 +20,10 @@ public abstract class Base {
             Log.info("Building local driver");
             driver = driverManager.buildLocalDriver();
         }
+        Log.info("Maximizing the window");
+        driver.manage().window().maximize();
+        Log.info("Deleting all the cookies");
+        driver.manage().deleteAllCookies();
     }
 
     protected void teardown() {
