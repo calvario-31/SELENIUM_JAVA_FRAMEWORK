@@ -12,13 +12,12 @@ public abstract class Base {
 
     protected void setup() {
         Log.info("Setting up the driver");
-        DriverManager driverManager = new DriverManager();
         if (runOnServer) {
             Log.info("Building remote driver");
-            driver = driverManager.buildRemoteDriver();
+            driver = new DriverManager().buildRemoteDriver();
         } else {
             Log.info("Building local driver");
-            driver = driverManager.buildLocalDriver();
+            driver = new DriverManager().buildLocalDriver();
         }
         Log.info("Maximizing the window");
         driver.manage().window().maximize();
