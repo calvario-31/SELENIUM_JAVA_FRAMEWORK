@@ -12,7 +12,6 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import pageobjects.Page;
-import utilities.datareader.src.CapabilitiesDataReader;
 
 import java.net.URL;
 
@@ -21,8 +20,7 @@ import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnviro
 public class DriverManager {
     private WebDriver driver;
     public static CapabilitiesModel capabilitiesModel;
-    private static boolean assignedCapabilities = false;
-    private static String browser = System.getProperty("browser");
+    public static String browser;
 
     public WebDriver buildLocalDriver() {
         if (browser == null) {
@@ -57,22 +55,10 @@ public class DriverManager {
         driver.manage().deleteAllCookies();
         Log.info("Getting the capabilities");
 
-        if (!assignedCapabilities) {
-            Log.info("Assigning local capabilities");
-            capabilitiesModel = CapabilitiesDataReader.getLocalCapabilities(driver);
-            assignedCapabilities = true;
-        }
-
         return driver;
     }
 
     public WebDriver buildRemoteDriver() {
-        if (!assignedCapabilities) {
-            Log.info("Assigning remote capabilities");
-            capabilitiesModel = CapabilitiesDataReader.getRemoteCapabilities();
-            assignedCapabilities = true;
-            Log.debug("capabilities assigned");
-        }
         try {
             driver = new RemoteWebDriver(new URL(capabilitiesModel.getBrowserstackUrl()),
                     capabilitiesModel.getDesiredCapabilities());

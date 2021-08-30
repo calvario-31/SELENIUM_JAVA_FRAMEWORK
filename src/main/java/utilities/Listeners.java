@@ -5,10 +5,13 @@ import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import utilities.datareader.src.CapabilitiesDataReader;
 
 import static utilities.Base.runOnServer;
 
 public class Listeners implements ITestListener {
+    public static boolean assignedCapabilities = false;
+
     @Override
     public void onTestStart(ITestResult result) {
         Log.startTest(result.getName());
@@ -18,6 +21,12 @@ public class Listeners implements ITestListener {
             WebDriver driver = ((Base) currentClass).driver;
             JavascriptExecutor jse = (JavascriptExecutor) driver;
             jse.executeScript("browserstack_executor: {\"action\": \"setSessionName\", \"arguments\": {\"name\":\"" + result.getName() + " \" }}");
+
+            if(assignedCapabilities){
+                Log.info("Assigning local capabilities");
+                DriverManager.capabilitiesModel = CapabilitiesDataReader.getLocalCapabilities(driver);
+                assignedCapabilities = true;
+            }
         }
     }
 
@@ -25,25 +34,20 @@ public class Listeners implements ITestListener {
     public void onTestSuccess(ITestResult result) {
         Log.endTest("PASSED", result.getName());
         if(runOnServer){
-            Log.info("Writing test success for browserstack");
-            Object currentClass = result.getInstance();
-            WebDriver driver = ((Base) currentClass).driver;
-            JavascriptExecutor jse = (JavascriptExecutor) driver;
-            jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \"passed\", \"reason\": \"Test OK\"}}");
+            new BrowserStackScripts().writeSuccess(result);
         }
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
         Log.endTest("FAILED", result.getName());
+
         Object currentClass = result.getInstance();
         WebDriver driver = ((Base) currentClass).driver;
         new DriverManager().getScreenshot(driver);
 
         if(runOnServer){
-            Log.info("Writing test failure for browserstack");
-            JavascriptExecutor jse = (JavascriptExecutor)driver;
-            jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\":\"failed\", \"reason\": \"\"}}");
+            new BrowserStackScripts().writeFailure(result);
         }
     }
 
@@ -55,6 +59,10 @@ public class Listeners implements ITestListener {
     @Override
     public void onTestSkipped(ITestResult result) {
         Log.endTest("SKIPPED", result.getName());
+
+        if(runOnServer){
+            new BrowserStackScripts().writeSkipped(result);
+        }
     }
 
     @Override
@@ -65,6 +73,13 @@ public class Listeners implements ITestListener {
     @Override
     public void onStart(ITestContext context) {
         Log.info("Beginning: " + context.getSuite().getName());
+
+        DriverManager.browser = System.getProperty("browser");
+
+        if(runOnServer){
+            Log.info("Assigning remote capabilities");
+            DriverManager.capabilitiesModel = CapabilitiesDataReader.getRemoteCapabilities();
+        }
     }
 
     @Override
