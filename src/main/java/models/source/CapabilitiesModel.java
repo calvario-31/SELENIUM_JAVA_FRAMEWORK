@@ -35,10 +35,14 @@ public class CapabilitiesModel {
         String browserstackLocalIdentifier = System.getenv("BROWSERSTACK_LOCAL_IDENTIFIER");
 
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability("browser", browserModel.getBrowser());
+    /*    desiredCapabilities.setCapability("browser", browserModel.getBrowser());
         desiredCapabilities.setCapability("browser_version", browserModel.getVersion());
         desiredCapabilities.setCapability("os", osModel.getOs());
-        desiredCapabilities.setCapability("os_version", osModel.getVersion());
+        desiredCapabilities.setCapability("os_version", osModel.getVersion());*/
+        desiredCapabilities.setCapability("device", "Samsung Galaxy S20");
+        desiredCapabilities.setCapability("os_version", "10.0");
+        desiredCapabilities.setCapability("browserName", "Android");
+        //
         desiredCapabilities.setCapability("browserstack.local", browserstackLocal);
         desiredCapabilities.setCapability("browserstack.localIdentifier", browserstackLocalIdentifier);
         desiredCapabilities.setCapability("build", buildName);
