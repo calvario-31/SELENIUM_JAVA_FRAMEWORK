@@ -42,6 +42,9 @@ public class CapabilitiesModel {
         desiredCapabilities.setCapability("browserstack.local", browserstackLocal);
         desiredCapabilities.setCapability("browserstack.localIdentifier", browserstackLocalIdentifier);
         desiredCapabilities.setCapability("build", buildName);
+        desiredCapabilities.setCapability("browserstack.debug", "true");  // for enabling visual logs
+        desiredCapabilities.setCapability("browserstack.console", "info");  // to enable console logs at the info level. You can also use other log levels here
+        desiredCapabilities.setCapability("browserstack.networkLogs", "true");  // to enable network logs to be logged
 
         return desiredCapabilities;
     }
