@@ -24,7 +24,6 @@ public class DriverManager {
     public static boolean runOnServer;
 
     public WebDriver buildDriver() {
-        Log.info("Setting up the driver");
         if (runOnServer) {
             Log.info("Building remote driver");
             driver = buildRemoteDriver();
