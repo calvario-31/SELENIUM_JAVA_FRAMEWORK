@@ -93,7 +93,7 @@ public class DriverManager {
         if (DriverManager.runOnServer) {
             DriverManager.browser = System.getProperty("browser");
             DriverManager.browserVersion = System.getProperty("browserVersion");
-            DriverManager.os = System.getProperty("OS");
+            DriverManager.os = System.getProperty("os");
             DriverManager.osVersion = System.getProperty("osVersion");
         } else {
             String browser = System.getProperty("browser");
