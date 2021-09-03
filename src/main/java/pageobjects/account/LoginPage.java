@@ -21,14 +21,15 @@ public class LoginPage extends Page {
     public void login(String username, String password) {
         Log.info("Going to the main page");
         goToIndex();
+        waitToLoad();
         Log.info("Filling the username");
         Log.debug("Username: " + username);
-        $$(inputUsername).sendKeys(username);
+        find(inputUsername).sendKeys(username);
         Log.info("Filling the password");
         Log.debug("Password: " + password);
-        $(inputPassword).sendKeys(password);
+        find(inputPassword).sendKeys(password);
         Log.info("Clicking on login");
-        $(buttonLogin).click();
+        find(buttonLogin).click();
     }
 
     @Step("Verifying the bot image is displayed")
@@ -41,5 +42,10 @@ public class LoginPage extends Page {
     public boolean errorMessageIsDisplayed() {
         Log.info("Verifying the error message is displayed");
         return isDisplayed(errorMessage);
+    }
+
+    @Override
+    public void waitToLoad() {
+        waitVisibilityOf(imageBot);
     }
 }

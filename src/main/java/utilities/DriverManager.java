@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 import io.qameta.allure.Attachment;
-import models.source.CapabilitiesModel;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import pageobjects.Page;
 
@@ -17,8 +17,27 @@ import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnviro
 
 public class DriverManager {
     private WebDriver driver;
-    public static CapabilitiesModel capabilitiesModel;
     public static String browser;
+    public static String browserVersion;
+    public static String os;
+    public static String osVersion;
+    public static boolean runOnServer;
+
+    public WebDriver buildDriver(){
+        Log.info("Setting up the driver");
+        if (runOnServer) {
+            Log.info("Building remote driver");
+            driver = buildRemoteDriver();
+        } else {
+            Log.info("Building local driver");
+            driver = buildLocalDriver();
+        }
+        Log.info("Maximizing the window");
+        driver.manage().window().maximize();
+        Log.info("Deleting all the cookies");
+        driver.manage().deleteAllCookies();
+        return driver;
+    }
 
     public WebDriver buildLocalDriver() {
         try {
@@ -37,8 +56,26 @@ public class DriverManager {
 
     public WebDriver buildRemoteDriver() {
         try {
-            driver = new RemoteWebDriver(new URL(capabilitiesModel.getBrowserstackUrl()),
-                    capabilitiesModel.getDesiredCapabilities());
+            String browserstackLocal = System.getenv("BROWSERSTACK_LOCAL");
+            String buildName = System.getenv("BROWSERSTACK_BUILD_NAME");
+            String browserstackLocalIdentifier = System.getenv("BROWSERSTACK_LOCAL_IDENTIFIER");
+            String username = System.getenv("BROWSERSTACK_USERNAME");
+            String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
+            String browserStackUrl = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
+
+            DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+            desiredCapabilities.setCapability("browser", browser);
+            desiredCapabilities.setCapability("browser_version", browserVersion);
+            desiredCapabilities.setCapability("os", os);
+            desiredCapabilities.setCapability("os_version", osVersion);
+            desiredCapabilities.setCapability("browserstack.local", browserstackLocal);
+            desiredCapabilities.setCapability("browserstack.localIdentifier", browserstackLocalIdentifier);
+            desiredCapabilities.setCapability("build", buildName);
+            desiredCapabilities.setCapability("browserstack.debug", "true");  // for enabling visual logs
+            desiredCapabilities.setCapability("browserstack.console", "info");  // to enable console logs at the info level. You can also use other log levels here
+            desiredCapabilities.setCapability("browserstack.networkLogs", "true");  // to enable network logs to be logged
+
+            driver = new RemoteWebDriver(new URL(browserStackUrl), desiredCapabilities);
             return driver;
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,10 +88,10 @@ public class DriverManager {
         Log.info("Writing environmental variables to the report");
         allureEnvironmentWriter(
                 ImmutableMap.<String, String>builder()
-                        .put("Browser", capabilitiesModel.getBrowserModel().getBrowser())
-                        .put("Browser Version", capabilitiesModel.getBrowserModel().getVersion())
-                        .put("OS", capabilitiesModel.getOsModel().getOs())
-                        .put("OS Version", capabilitiesModel.getOsModel().getVersion())
+                        .put("Browser", browser)
+                        .put("Browser Version", browserVersion)
+                        .put("OS", os)
+                        .put("OS Version", osVersion)
                         .put("URL", Page.getMainUrl())
                         .build());
     }

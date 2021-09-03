@@ -16,17 +16,17 @@ public abstract class Page {
         wait = new WebDriverWait(this.driver, timeOut);
     }
 
-    protected WebElement $(By locator) {
+    protected WebElement find(By locator) {
         return driver.findElement(locator);
     }
 
-    protected WebElement $$(By locator) {
+    protected WebElement waitVisibilityOf(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     protected boolean isDisplayed(By locator) {
         try {
-            $$(locator);
+            waitVisibilityOf(locator);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,4 +41,6 @@ public abstract class Page {
     public static String getMainUrl() {
         return mainUrl;
     }
+
+    public abstract void waitToLoad();
 }

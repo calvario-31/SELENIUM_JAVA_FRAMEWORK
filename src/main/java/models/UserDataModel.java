@@ -1,4 +1,4 @@
-package models.test;
+package models;
 
 import com.github.javafaker.Faker;
 

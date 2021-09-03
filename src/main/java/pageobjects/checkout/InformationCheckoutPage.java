@@ -11,6 +11,7 @@ public class InformationCheckoutPage extends Page {
     private final By inputLastname = By.id("last-name");
     private final By inputZipcode = By.id("postal-code");
     private final By buttonContinue = By.id("continue");
+    private final By title = By.className("title");
 
     public InformationCheckoutPage(WebDriver driver) {
         super(driver, 5);
@@ -18,16 +19,22 @@ public class InformationCheckoutPage extends Page {
 
     @Step("Filling the form with {0}, {1}, {2}")
     public void fillForm(String firstname, String lastname, String zipcode) {
+        waitToLoad();
         Log.info("Filling the username");
         Log.debug("Firstname: " + firstname);
-        $$(inputFirstname).sendKeys(firstname);
+        find(inputFirstname).sendKeys(firstname);
         Log.info("Filling the lastname");
         Log.debug("Lastname: " + lastname);
-        $(inputLastname).sendKeys(lastname);
+        find(inputLastname).sendKeys(lastname);
         Log.info("Filling the zipcode");
         Log.debug("Zipcode: " + zipcode);
-        $(inputZipcode).sendKeys(zipcode);
+        find(inputZipcode).sendKeys(zipcode);
         Log.info("Clicking on continue");
-        $(buttonContinue).click();
+        find(buttonContinue).click();
+    }
+
+    @Override
+    public void waitToLoad() {
+        waitVisibilityOf(title);
     }
 }

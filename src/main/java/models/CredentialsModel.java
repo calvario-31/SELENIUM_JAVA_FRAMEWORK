@@ -1,4 +1,4 @@
-package models.test;
+package models;
 
 import com.poiji.annotation.ExcelCellName;
 import com.poiji.annotation.ExcelSheet;

@@ -23,6 +23,11 @@ public class SuccessShoppingPage extends Page {
     @Step("Clicking on back to home")
     public void backToHome() {
         Log.info("Clicking on back to home");
-        $(buttonBackToHome).click();
+        find(buttonBackToHome).click();
+    }
+
+    @Override
+    public void waitToLoad() {
+
     }
 }

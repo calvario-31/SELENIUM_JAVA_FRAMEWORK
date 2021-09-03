@@ -4,17 +4,19 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.TmsLink;
-import models.test.CredentialsModel;
+import models.CredentialsModel;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageobjects.account.LoginPage;
 import pageobjects.shopping.ShoppingPage;
+import pageobjects.topmenu.TopMenuPage;
 import utilities.Base;
-import utilities.datareader.test.TestDataReader;
+import utilities.datareader.TestDataReader;
 
 public class LogoutTest extends Base {
     private LoginPage loginPage;
     private ShoppingPage shoppingPage;
+    private TopMenuPage topMenuPage;
 
     @BeforeMethod(alwaysRun = true, description = "setting up the driver")
     public void setUp() {
@@ -32,7 +34,9 @@ public class LogoutTest extends Base {
 
         shoppingPage = new ShoppingPage(driver);
         Assert.assertTrue(shoppingPage.titleIsDisplayed());
-        shoppingPage.logout();
+
+        topMenuPage = new TopMenuPage(driver);
+        topMenuPage.logout();
 
         Assert.assertTrue(loginPage.buttonImageIsDisplayed(), "Bot image is not displayed");
     }

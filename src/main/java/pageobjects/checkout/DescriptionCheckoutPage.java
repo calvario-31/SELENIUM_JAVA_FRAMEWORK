@@ -8,6 +8,7 @@ import utilities.Log;
 
 public class DescriptionCheckoutPage extends Page {
     private final By buttonCheckout = By.id("checkout");
+    private final By labelDescription = By.className("cart_desc_label");
 
     public DescriptionCheckoutPage(WebDriver driver) {
         super(driver, 5);
@@ -15,7 +16,13 @@ public class DescriptionCheckoutPage extends Page {
 
     @Step("Clicking on continue checkout")
     public void continueCheckout() {
+        waitToLoad();
         Log.info("Clicking on the checkout button");
-        $$(buttonCheckout).click();
+        find(buttonCheckout).click();
+    }
+
+    @Override
+    public void waitToLoad() {
+        waitVisibilityOf(labelDescription);
     }
 }

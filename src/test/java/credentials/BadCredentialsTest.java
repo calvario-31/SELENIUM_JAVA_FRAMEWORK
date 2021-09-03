@@ -4,12 +4,12 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.TmsLink;
-import models.test.CredentialsModel;
+import models.CredentialsModel;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageobjects.account.LoginPage;
 import utilities.Base;
-import utilities.datareader.test.TestDataReader;
+import utilities.datareader.TestDataReader;
 
 public class BadCredentialsTest extends Base {
     private LoginPage loginPage;

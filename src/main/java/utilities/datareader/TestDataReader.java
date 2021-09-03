@@ -1,9 +1,9 @@
-package utilities.datareader.test;
+package utilities.datareader;
 
 import com.poiji.bind.Poiji;
-import models.test.CredentialsModel;
-import models.test.ShoppingItemModel;
-import models.test.UserDataModel;
+import models.CredentialsModel;
+import models.ShoppingItemModel;
+import models.UserDataModel;
 
 import java.io.File;
 import java.util.List;

@@ -4,17 +4,17 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.TmsLink;
-import models.test.CredentialsModel;
+import models.CredentialsModel;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageobjects.account.LoginPage;
-import pageobjects.shopping.ShoppingPage;
+import pageobjects.topmenu.TopMenuPage;
 import utilities.Base;
-import utilities.datareader.test.TestDataReader;
+import utilities.datareader.TestDataReader;
 
 public class AboutTest extends Base {
     private LoginPage loginPage;
-    private ShoppingPage shoppingPage;
+    private TopMenuPage topMenuPage;
 
     @BeforeMethod(alwaysRun = true, description = "setting up the driver")
     public void setUp() {
@@ -30,8 +30,8 @@ public class AboutTest extends Base {
         loginPage = new LoginPage(driver);
         loginPage.login(credentialsModel.getUsername(), credentialsModel.getPassword());
 
-        shoppingPage = new ShoppingPage(driver);
-        Assert.assertEquals(shoppingPage.getHrefFromAbout(), sauceLabsUrl, "Href does not equals to " + sauceLabsUrl);
+        topMenuPage = new TopMenuPage(driver);
+        Assert.assertEquals(topMenuPage.getHrefFromAbout(), sauceLabsUrl, "Href does not equals to " + sauceLabsUrl);
     }
 
     @AfterMethod(alwaysRun = true, description = "tearing down the driver")

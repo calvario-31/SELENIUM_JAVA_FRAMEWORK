@@ -8,7 +8,8 @@
     </groups>
 
     <listeners>
-        <listener class-name="utilities.Listeners"/>
+        <listener class-name="utilities.listeners.SuiteListeners"/>
+        <listener class-name="utilities.listeners.TestListeners"/>
     </listeners>
 
     <test name="failed test">

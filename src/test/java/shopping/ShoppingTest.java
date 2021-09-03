@@ -4,9 +4,9 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.TmsLink;
-import models.test.CredentialsModel;
-import models.test.ShoppingItemModel;
-import models.test.UserDataModel;
+import models.CredentialsModel;
+import models.ShoppingItemModel;
+import models.UserDataModel;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageobjects.account.LoginPage;
@@ -16,8 +16,9 @@ import pageobjects.checkout.OverviewCheckoutPage;
 import pageobjects.checkout.SuccessShoppingPage;
 import pageobjects.shopping.DetailItemPage;
 import pageobjects.shopping.ShoppingPage;
+import pageobjects.topmenu.TopMenuPage;
 import utilities.Base;
-import utilities.datareader.test.TestDataReader;
+import utilities.datareader.TestDataReader;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class ShoppingTest extends Base {
     private InformationCheckoutPage informationCheckoutPage;
     private OverviewCheckoutPage overviewCheckoutPage;
     private SuccessShoppingPage successShoppingPage;
+    private TopMenuPage topMenuPage;
 
     @BeforeMethod(alwaysRun = true, description = "setting up the driver")
     public void setUp() {
@@ -58,8 +60,9 @@ public class ShoppingTest extends Base {
             sum += currentPrice;
         }
 
-        Assert.assertEquals(shoppingPage.getItemCount(), shoppingItemModelList.size(), "Item count were not equal");
-        shoppingPage.goToCheckout();
+        topMenuPage = new TopMenuPage(driver);
+        Assert.assertEquals(topMenuPage.getItemCount(), shoppingItemModelList.size(), "Item count were not equal");
+        topMenuPage.goToCheckout();
 
         descriptionCheckoutPage = new DescriptionCheckoutPage(driver);
         descriptionCheckoutPage.continueCheckout();

@@ -4,13 +4,13 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Issue;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import models.test.CredentialsModel;
+import models.CredentialsModel;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pageobjects.account.LoginPage;
 import pageobjects.shopping.ShoppingPage;
 import utilities.Base;
-import utilities.datareader.test.TestDataReader;
+import utilities.datareader.TestDataReader;
 
 public class DummyFailTest extends Base {
     private LoginPage loginPage;
