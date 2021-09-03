@@ -5,6 +5,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import utilities.Base;
+import utilities.BrowserStackScripts;
 import utilities.DriverManager;
 import utilities.Log;
 
@@ -12,11 +13,17 @@ public class TestListeners implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
         Log.startTest(result.getName());
+        if(DriverManager.runOnServer){
+            BrowserStackScripts.writeInit(getDriverFromResult(result), result.getName());
+        }
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
         Log.endTest("PASSED", result.getName());
+        if(DriverManager.runOnServer){
+            BrowserStackScripts.writeSuccess(getDriverFromResult(result));
+        }
     }
 
     @Override
@@ -25,11 +32,18 @@ public class TestListeners implements ITestListener {
 
         WebDriver driver = getDriverFromResult(result);
         new DriverManager().getScreenshot(driver);
+
+        if(DriverManager.runOnServer){
+            BrowserStackScripts.writeFailure(getDriverFromResult(result));
+        }
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
         Log.endTest("SKIPPED", result.getName());
+        if(DriverManager.runOnServer){
+            BrowserStackScripts.writeSkipped(getDriverFromResult(result));
+        }
     }
 
     @Override
