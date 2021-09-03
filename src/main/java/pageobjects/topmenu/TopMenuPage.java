@@ -56,7 +56,7 @@ public class TopMenuPage extends Page {
         find(buttonCheckout).click();
     }
 
-    private void openBurgerMenu(){
+    private void openBurgerMenu() {
         waitToLoad();
         Log.info("Clicking on the menu burger");
         find(menuBurger).click();

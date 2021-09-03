@@ -23,7 +23,7 @@ public class DriverManager {
     public static String osVersion;
     public static boolean runOnServer;
 
-    public WebDriver buildDriver(){
+    public WebDriver buildDriver() {
         Log.info("Setting up the driver");
         if (runOnServer) {
             Log.info("Building remote driver");
@@ -45,6 +45,10 @@ public class DriverManager {
             WebDriverManager.getInstance(driverManagerType).setup();
             Class<?> driverClass = Class.forName(driverManagerType.browserClass());
             driver = (WebDriver) driverClass.newInstance();
+
+            if (DriverManager.browserVersion == null) {
+                DriverManager.browserVersion = ((RemoteWebDriver) driver).getCapabilities().getVersion();
+            }
 
             return driver;
         } catch (Exception e) {
@@ -84,7 +88,27 @@ public class DriverManager {
         }
     }
 
-    public void writeEnvVariables() {
+    public static void assignDriverParameters() {
+        DriverManager.runOnServer = System.getenv("JOB_NAME") != null;
+
+        if (DriverManager.runOnServer) {
+            DriverManager.browser = System.getProperty("browser");
+            DriverManager.browserVersion = System.getProperty("browserVersion");
+            DriverManager.os = System.getProperty("OS");
+            DriverManager.osVersion = System.getProperty("osVersion");
+        } else {
+            String browser = System.getProperty("browser");
+            if (browser == null) {
+                Log.info("Setting default local browser to CHROME");
+                browser = "CHROME";
+            }
+            DriverManager.browser = browser;
+            DriverManager.os = System.getProperty("os.name");
+            DriverManager.osVersion = System.getProperty("os.version");
+        }
+    }
+
+    public static void writeEnvVariables() {
         Log.info("Writing environmental variables to the report");
         allureEnvironmentWriter(
                 ImmutableMap.<String, String>builder()

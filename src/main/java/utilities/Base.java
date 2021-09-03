@@ -27,6 +27,7 @@ public abstract class Base {
 
     @BeforeMethod(description = "Setting up the driver")
     public abstract void setUp();
+
     @AfterMethod(description = "Tearing down the driver")
     public abstract void tearDown();
 }

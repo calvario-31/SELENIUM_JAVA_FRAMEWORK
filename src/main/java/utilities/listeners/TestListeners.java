@@ -52,7 +52,7 @@ public class TestListeners implements ITestListener {
         ITestListener.super.onFinish(context);
     }
 
-    private WebDriver getDriverFromResult(ITestResult result){
+    private WebDriver getDriverFromResult(ITestResult result) {
         Object currentClass = result.getInstance();
         return ((Base) currentClass).getDriver();
     }

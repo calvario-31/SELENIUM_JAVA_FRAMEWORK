@@ -1,7 +1,7 @@
 # SELENIUM_POM_COMPLETE_FRAMEWORK
 
 URL TESTED: https://www.saucedemo.com/
-It is configured to attach it to a jenkins build 
+It is configured to attach it to a jenkins build
 
 to run on command line:
 mvn clean test -DsuiteName=${suite name} -Dbrowser=${browser name}
