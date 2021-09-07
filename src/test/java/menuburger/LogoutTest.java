@@ -21,6 +21,7 @@ public class LogoutTest extends Base {
     @BeforeMethod(alwaysRun = true, description = "setting up the driver")
     public void setUp() {
         setup();
+        initPages();
     }
 
     @Test(dataProvider = "test data", groups = {"regression", "smoke"})
@@ -29,13 +30,10 @@ public class LogoutTest extends Base {
     @Parameters({"credentials"})
     @TmsLink("ksBWkBLx")
     public void logoutTest(CredentialsModel credentialsModel) {
-        loginPage = new LoginPage(driver);
         loginPage.login(credentialsModel.getUsername(), credentialsModel.getPassword());
 
-        shoppingPage = new ShoppingPage(driver);
         Assert.assertTrue(shoppingPage.titleIsDisplayed());
 
-        topMenuPage = new TopMenuPage(driver);
         topMenuPage.logout();
 
         Assert.assertTrue(loginPage.buttonImageIsDisplayed(), "Bot image is not displayed");
@@ -53,5 +51,12 @@ public class LogoutTest extends Base {
         return new Object[][]{
                 {testDataReader.getValidCredentials()}
         };
+    }
+
+    @Override
+    public void initPages() {
+        loginPage = new LoginPage(driver);
+        shoppingPage = new ShoppingPage(driver);
+        topMenuPage = new TopMenuPage(driver);
     }
 }

@@ -35,6 +35,7 @@ public class ShoppingTest extends Base {
     @BeforeMethod(alwaysRun = true, description = "setting up the driver")
     public void setUp() {
         setup();
+        initPages();
     }
 
     @Test(dataProvider = "test data", groups = {"regression"})
@@ -45,11 +46,8 @@ public class ShoppingTest extends Base {
     public void shoppingEndToEndTest(CredentialsModel credentialsModel,
                                      List<ShoppingItemModel> shoppingItemModelList,
                                      UserDataModel userDataModel) {
-        loginPage = new LoginPage(driver);
-        loginPage.login(credentialsModel.getUsername(), credentialsModel.getPassword());
 
-        shoppingPage = new ShoppingPage(driver);
-        detailItemPage = new DetailItemPage(driver);
+        loginPage.login(credentialsModel.getUsername(), credentialsModel.getPassword());
 
         double sum = 0;
         double currentPrice;
@@ -60,22 +58,17 @@ public class ShoppingTest extends Base {
             sum += currentPrice;
         }
 
-        topMenuPage = new TopMenuPage(driver);
         Assert.assertEquals(topMenuPage.getItemCount(), shoppingItemModelList.size(), "Item count were not equal");
         topMenuPage.goToCheckout();
 
-        descriptionCheckoutPage = new DescriptionCheckoutPage(driver);
         descriptionCheckoutPage.continueCheckout();
 
-        informationCheckoutPage = new InformationCheckoutPage(driver);
         informationCheckoutPage.fillForm(userDataModel.getFirstname(), userDataModel.getLastname(),
                 userDataModel.getZipcode());
 
-        overviewCheckoutPage = new OverviewCheckoutPage(driver);
         Assert.assertEquals(overviewCheckoutPage.getTotalPrice(), sum, "Sum were not equal");
         overviewCheckoutPage.finishCheckout();
 
-        successShoppingPage = new SuccessShoppingPage(driver);
         Assert.assertTrue(successShoppingPage.titleIsDisplayed(), "Success title was not displayed");
         successShoppingPage.backToHome();
 
@@ -94,5 +87,17 @@ public class ShoppingTest extends Base {
         return new Object[][]{
                 {testDataReader.getValidCredentials(), testDataReader.getItemList(), testDataReader.getUserData()}
         };
+    }
+
+    @Override
+    public void initPages() {
+        loginPage = new LoginPage(driver);
+        shoppingPage = new ShoppingPage(driver);
+        detailItemPage = new DetailItemPage(driver);
+        topMenuPage = new TopMenuPage(driver);
+        descriptionCheckoutPage = new DescriptionCheckoutPage(driver);
+        informationCheckoutPage = new InformationCheckoutPage(driver);
+        overviewCheckoutPage = new OverviewCheckoutPage(driver);
+        successShoppingPage = new SuccessShoppingPage(driver);
     }
 }

@@ -19,6 +19,7 @@ public class AboutTest extends Base {
     @BeforeMethod(alwaysRun = true, description = "setting up the driver")
     public void setUp() {
         setup();
+        initPages();
     }
 
     @Test(dataProvider = "test data", groups = {"regression", "smoke"})
@@ -27,10 +28,8 @@ public class AboutTest extends Base {
     @Parameters({"credentials", "sauce labs url"})
     @TmsLink("moriaEyr")
     public void aboutTest(CredentialsModel credentialsModel, String sauceLabsUrl) {
-        loginPage = new LoginPage(driver);
         loginPage.login(credentialsModel.getUsername(), credentialsModel.getPassword());
 
-        topMenuPage = new TopMenuPage(driver);
         Assert.assertEquals(topMenuPage.getHrefFromAbout(), sauceLabsUrl, "Href does not equals to " + sauceLabsUrl);
     }
 
@@ -46,5 +45,11 @@ public class AboutTest extends Base {
         return new Object[][]{
                 {testDataReader.getValidCredentials(), testDataReader.getSauceLabsUrl()}
         };
+    }
+
+    @Override
+    public void initPages() {
+        loginPage = new LoginPage(driver);
+        topMenuPage = new TopMenuPage(driver);
     }
 }

@@ -17,6 +17,7 @@ public class BadCredentialsTest extends Base {
     @BeforeMethod(alwaysRun = true, description = "setting up the driver")
     public void setUp() {
         setup();
+        initPages();
     }
 
     @Test(dataProvider = "test data", groups = {"regression", "smoke"})
@@ -25,7 +26,6 @@ public class BadCredentialsTest extends Base {
     @Parameters({"credentials"})
     @TmsLink("2QtPrEKU")
     public void badCredentialsTest(CredentialsModel credentialsModel) {
-        loginPage = new LoginPage(driver);
         loginPage.login(credentialsModel.getUsername(), credentialsModel.getPassword());
 
         Assert.assertTrue(loginPage.errorMessageIsDisplayed(), "Error message was not displayed");
@@ -44,5 +44,10 @@ public class BadCredentialsTest extends Base {
         return new Object[][]{
                 {testDataReader.getLockedCredentials()}
         };
+    }
+
+    @Override
+    public void initPages() {
+        loginPage = new LoginPage(driver);
     }
 }

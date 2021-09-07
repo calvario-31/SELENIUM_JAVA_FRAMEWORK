@@ -19,6 +19,7 @@ public class DummyFailTest extends Base {
     @BeforeMethod(alwaysRun = true, description = "setting up the driver")
     public void setUp() {
         setup();
+        initPages();
     }
 
     @Test(dataProvider = "locked out user data", groups = "failed")
@@ -27,10 +28,8 @@ public class DummyFailTest extends Base {
     @Parameters({"credentials"})
     @Issue("8dvc3IEV")
     public void alwaysFailsTest(CredentialsModel credentialsModel) {
-        loginPage = new LoginPage(driver);
         loginPage.login(credentialsModel.getUsername(), credentialsModel.getPassword());
 
-        shoppingPage = new ShoppingPage(driver);
         Assert.assertTrue(shoppingPage.titleIsDisplayed(), "Shopping title was not displayed");
     }
 
@@ -40,7 +39,6 @@ public class DummyFailTest extends Base {
     @Parameters({"credentials"})
     @Issue("8dvc3IEV")
     public void alwaysFailsTest2(CredentialsModel credentialsModel) {
-        loginPage = new LoginPage(driver);
         loginPage.login(credentialsModel.getUsername(), credentialsModel.getPassword());
 
         Assert.assertTrue(loginPage.buttonImageIsDisplayed(), "Bot image was not displayed");
@@ -67,5 +65,11 @@ public class DummyFailTest extends Base {
         return new Object[][]{
                 {testDataReader.getLockedCredentials()}
         };
+    }
+
+    @Override
+    public void initPages() {
+        loginPage = new LoginPage(driver);
+        shoppingPage = new ShoppingPage(driver);
     }
 }

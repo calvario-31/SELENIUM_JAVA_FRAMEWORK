@@ -25,9 +25,11 @@ public abstract class Base {
         return driver;
     }
 
-    @BeforeMethod(description = "Setting up the driver")
+    @BeforeMethod(alwaysRun = true, description = "Setting up the driver")
     public abstract void setUp();
 
-    @AfterMethod(description = "Tearing down the driver")
+    @AfterMethod(alwaysRun = true, description = "Tearing down the driver")
     public abstract void tearDown();
+
+    public abstract void initPages();
 }
