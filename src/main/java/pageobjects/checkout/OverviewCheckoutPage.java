@@ -12,7 +12,7 @@ public class OverviewCheckoutPage extends Page {
     private final By title = By.className("title");
 
     public OverviewCheckoutPage(WebDriver driver) {
-        super(driver, 5);
+        super(driver);
     }
 
     @Step("Getting the total price from the UI")
@@ -32,6 +32,6 @@ public class OverviewCheckoutPage extends Page {
 
     @Override
     public void waitToLoad() {
-        waitVisibilityOf(title);
+        waitVisibility(title, defaultTimeOut);
     }
 }

@@ -11,13 +11,13 @@ public class SuccessShoppingPage extends Page {
     private final By buttonBackToHome = By.id("back-to-products");
 
     public SuccessShoppingPage(WebDriver driver) {
-        super(driver, 5);
+        super(driver);
     }
 
     @Step("Verifying the title is displayed")
     public boolean titleIsDisplayed() {
         Log.info("Verifying the title is displayed");
-        return isDisplayed(successTitle);
+        return elementIsDisplayed(successTitle, defaultTimeOut);
     }
 
     @Step("Clicking on back to home")

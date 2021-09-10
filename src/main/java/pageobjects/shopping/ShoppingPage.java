@@ -10,13 +10,13 @@ public class ShoppingPage extends Page {
     private final By title = By.className("title");
 
     public ShoppingPage(WebDriver driver) {
-        super(driver, 5);
+        super(driver);
     }
 
     @Step("Verifying the title is displayed")
     public boolean titleIsDisplayed() {
         Log.info("Verifying the title is displayed");
-        return isDisplayed(title);
+        return elementIsDisplayed(title, defaultTimeOut);
     }
 
     @Step("Going to item details of {0}")
@@ -32,6 +32,6 @@ public class ShoppingPage extends Page {
 
     @Override
     public void waitToLoad() {
-        waitVisibilityOf(title);
+        waitVisibility(title, defaultTimeOut);
     }
 }

@@ -11,7 +11,7 @@ public class DescriptionCheckoutPage extends Page {
     private final By labelDescription = By.className("cart_desc_label");
 
     public DescriptionCheckoutPage(WebDriver driver) {
-        super(driver, 5);
+        super(driver);
     }
 
     @Step("Clicking on continue checkout")
@@ -23,6 +23,6 @@ public class DescriptionCheckoutPage extends Page {
 
     @Override
     public void waitToLoad() {
-        waitVisibilityOf(labelDescription);
+        waitVisibility(labelDescription, defaultTimeOut);
     }
 }

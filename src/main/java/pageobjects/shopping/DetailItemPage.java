@@ -11,7 +11,7 @@ public class DetailItemPage extends Page {
     private final By backToProducts = By.id("back-to-products");
 
     public DetailItemPage(WebDriver driver) {
-        super(driver, 5);
+        super(driver);
     }
 
     @Step("Adding item to cart with id {idButton}")
@@ -33,6 +33,6 @@ public class DetailItemPage extends Page {
 
     @Override
     public void waitToLoad() {
-        waitVisibilityOf(backToProducts);
+        waitVisibility(backToProducts, defaultTimeOut);
     }
 }

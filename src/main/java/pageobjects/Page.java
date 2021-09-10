@@ -7,26 +7,30 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class Page {
-    protected final WebDriver driver;
-    protected final WebDriverWait wait;
     protected final static String mainUrl = "https://www.saucedemo.com/";
+    protected final WebDriver driver;
+    protected final int defaultTimeOut = 5;
 
-    protected Page(WebDriver driver, int timeOut) {
+    protected Page(WebDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(this.driver, timeOut);
+    }
+
+    public static String getMainUrl() {
+        return mainUrl;
     }
 
     protected WebElement find(By locator) {
         return driver.findElement(locator);
     }
 
-    protected WebElement waitVisibilityOf(By locator) {
+    protected WebElement waitVisibility(By locator, int timeOut) {
+        WebDriverWait wait = new WebDriverWait(driver, timeOut);
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
-    protected boolean isDisplayed(By locator) {
+    protected boolean elementIsDisplayed(By locator, int timeOut) {
         try {
-            waitVisibilityOf(locator);
+            waitVisibility(locator, timeOut);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,10 +40,6 @@ public abstract class Page {
 
     protected void goToIndex() {
         driver.get(mainUrl);
-    }
-
-    public static String getMainUrl() {
-        return mainUrl;
     }
 
     public abstract void waitToLoad();

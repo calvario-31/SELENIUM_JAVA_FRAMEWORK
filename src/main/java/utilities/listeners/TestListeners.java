@@ -13,7 +13,7 @@ public class TestListeners implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
         Log.startTest(result.getName());
-        if(DriverManager.runOnServer){
+        if (DriverManager.runOnServer) {
             BrowserStackScripts.writeInit(getDriverFromResult(result), result.getName());
         }
     }
@@ -21,7 +21,7 @@ public class TestListeners implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult result) {
         Log.endTest("PASSED", result.getName());
-        if(DriverManager.runOnServer){
+        if (DriverManager.runOnServer) {
             BrowserStackScripts.writeSuccess(getDriverFromResult(result));
         }
     }
@@ -33,7 +33,7 @@ public class TestListeners implements ITestListener {
         WebDriver driver = getDriverFromResult(result);
         new DriverManager().getScreenshot(driver);
 
-        if(DriverManager.runOnServer){
+        if (DriverManager.runOnServer) {
             BrowserStackScripts.writeFailure(getDriverFromResult(result));
         }
     }
@@ -41,7 +41,7 @@ public class TestListeners implements ITestListener {
     @Override
     public void onTestSkipped(ITestResult result) {
         Log.endTest("SKIPPED", result.getName());
-        if(DriverManager.runOnServer){
+        if (DriverManager.runOnServer) {
             BrowserStackScripts.writeSkipped(getDriverFromResult(result));
         }
     }

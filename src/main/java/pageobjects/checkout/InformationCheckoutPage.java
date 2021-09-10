@@ -14,7 +14,7 @@ public class InformationCheckoutPage extends Page {
     private final By title = By.className("title");
 
     public InformationCheckoutPage(WebDriver driver) {
-        super(driver, 5);
+        super(driver);
     }
 
     @Step("Filling the form with {0}, {1}, {2}")
@@ -35,6 +35,6 @@ public class InformationCheckoutPage extends Page {
 
     @Override
     public void waitToLoad() {
-        waitVisibilityOf(title);
+        waitVisibility(title, defaultTimeOut);
     }
 }

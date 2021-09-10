@@ -16,12 +16,44 @@ import java.net.URL;
 import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
 public class DriverManager {
-    private WebDriver driver;
     public static String browser;
     public static String browserVersion;
     public static String os;
     public static String osVersion;
     public static boolean runOnServer;
+    private WebDriver driver;
+
+    public static void assignDriverParameters() {
+        DriverManager.runOnServer = System.getenv("JOB_NAME") != null;
+
+        if (DriverManager.runOnServer) {
+            DriverManager.browser = System.getProperty("browser");
+            DriverManager.browserVersion = System.getProperty("browserVersion");
+            DriverManager.os = System.getProperty("os");
+            DriverManager.osVersion = System.getProperty("osVersion");
+        } else {
+            String browser = System.getProperty("browser");
+            if (browser == null) {
+                Log.info("Setting default local browser to CHROME");
+                browser = "CHROME";
+            }
+            DriverManager.browser = browser;
+            DriverManager.os = System.getProperty("os.name");
+            DriverManager.osVersion = System.getProperty("os.version");
+        }
+    }
+
+    public static void writeEnvVariables() {
+        Log.info("Writing environmental variables to the report");
+        allureEnvironmentWriter(
+                ImmutableMap.<String, String>builder()
+                        .put("Browser", browser)
+                        .put("Browser Version", browserVersion)
+                        .put("OS", os)
+                        .put("OS Version", osVersion)
+                        .put("URL", Page.getMainUrl())
+                        .build());
+    }
 
     public WebDriver buildDriver() {
         if (runOnServer) {
@@ -85,38 +117,6 @@ public class DriverManager {
             Log.error("Failed building remote driver");
             return null;
         }
-    }
-
-    public static void assignDriverParameters() {
-        DriverManager.runOnServer = System.getenv("JOB_NAME") != null;
-
-        if (DriverManager.runOnServer) {
-            DriverManager.browser = System.getProperty("browser");
-            DriverManager.browserVersion = System.getProperty("browserVersion");
-            DriverManager.os = System.getProperty("os");
-            DriverManager.osVersion = System.getProperty("osVersion");
-        } else {
-            String browser = System.getProperty("browser");
-            if (browser == null) {
-                Log.info("Setting default local browser to CHROME");
-                browser = "CHROME";
-            }
-            DriverManager.browser = browser;
-            DriverManager.os = System.getProperty("os.name");
-            DriverManager.osVersion = System.getProperty("os.version");
-        }
-    }
-
-    public static void writeEnvVariables() {
-        Log.info("Writing environmental variables to the report");
-        allureEnvironmentWriter(
-                ImmutableMap.<String, String>builder()
-                        .put("Browser", browser)
-                        .put("Browser Version", browserVersion)
-                        .put("OS", os)
-                        .put("OS Version", osVersion)
-                        .put("URL", Page.getMainUrl())
-                        .build());
     }
 
     @Attachment(value = "Screenshot failure", type = "image/png")

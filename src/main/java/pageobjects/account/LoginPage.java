@@ -14,7 +14,7 @@ public class LoginPage extends Page {
     private final By errorMessage = By.cssSelector("h3[data-test='error']");
 
     public LoginPage(WebDriver driver) {
-        super(driver, 5);
+        super(driver);
     }
 
     @Step("Login into the app with {0} and {1}")
@@ -35,17 +35,17 @@ public class LoginPage extends Page {
     @Step("Verifying the bot image is displayed")
     public boolean buttonImageIsDisplayed() {
         Log.info("Verifying the bot image is displayed");
-        return isDisplayed(imageBot);
+        return elementIsDisplayed(imageBot, defaultTimeOut);
     }
 
     @Step("Verifying the error message is displayed")
     public boolean errorMessageIsDisplayed() {
         Log.info("Verifying the error message is displayed");
-        return isDisplayed(errorMessage);
+        return elementIsDisplayed(errorMessage, defaultTimeOut);
     }
 
     @Override
     public void waitToLoad() {
-        waitVisibilityOf(imageBot);
+        waitVisibility(imageBot, defaultTimeOut);
     }
 }

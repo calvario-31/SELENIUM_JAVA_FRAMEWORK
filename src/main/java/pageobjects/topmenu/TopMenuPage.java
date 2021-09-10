@@ -15,7 +15,7 @@ public class TopMenuPage extends Page {
     private final By buttonCheckout = By.id("shopping_cart_container");
 
     public TopMenuPage(WebDriver driver) {
-        super(driver, 5);
+        super(driver);
     }
 
     @Step("Getting the href from about button and verifying is enabled")
@@ -36,9 +36,8 @@ public class TopMenuPage extends Page {
     public void logout() {
         openBurgerMenu();
         Log.info("Clicking on the button logout");
-        waitVisibilityOf(buttonLogout).click();
+        waitVisibility(buttonLogout, defaultTimeOut).click();
     }
-
 
     @Step("Getting the item count from the UI")
     public int getItemCount() {
@@ -64,6 +63,6 @@ public class TopMenuPage extends Page {
 
     @Override
     public void waitToLoad() {
-        waitVisibilityOf(menuBurger);
+        waitVisibility(menuBurger, defaultTimeOut);
     }
 }
