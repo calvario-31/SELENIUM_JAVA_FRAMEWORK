@@ -10,3 +10,6 @@ example:
 mvn clean test -DsuiteName=failed -Dbrowser=EDGE
 
 PD: If no browser specified then it will run on CHROME
+
+Jenkins top maven script:
+clean test -DsuiteName=${SUITE} -Dos="${OS}" -DosVersion="${OS_VERSION}" -Dbrowser=${BROWSER} -DbrowserVersion=${BROWSER_VERSION}
