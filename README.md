@@ -1,7 +1,5 @@
 # SELENIUM_POM_COMPLETE_FRAMEWORK
 
-It is configured to attach it to a jenkins build
-
 Url tested: 
 
     https://www.saucedemo.com/
